@@ -1,0 +1,54 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+# Gradle build directory
+/build/
+/.gradle/
+
+
+
+# IntelliJ/Android Studio specific files
+/.idea/
+/captures/
+/.navigation/
+/app/build/
+
+# Log files
+*.log
+
+# OS specific files
+Thumbs.db
+
+# Gradle cache and wrapper
+
+/**/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Keystore files (ha vannak)
+*.jks
+*.keystore
+
+# Google Services (ha van Firebase)
+google-services.json
+fabric.properties
+
+# NDK specific files
+/cxx/
+
+# Miscellaneous
+*.class
+*.apk
+*.dex
+*.so
