@@ -4,8 +4,15 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowBackground">@color/brown</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="ToolbarTitle">
+        <item name="android:fontFamily">@font/dancing_script</item>
+        <item name="android:textSize">32sp</item> <!-- nagyobb -->
+        <item name="android:textColor">@android:color/white</item> <!-- fehér -->
+        <item name="android:textStyle">bold</item> <!-- vastag betű -->
+    </style>
 
     <style name="Theme.DailyEventsApp" parent="Base.Theme.DailyEventsApp" />
 </resources>
