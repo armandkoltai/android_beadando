@@ -4,5 +4,8 @@
     <string name="home_title">Timeless Tales</string>
     <string name="default_date">JAN 01</string>
     <string name="date_text">Select Date:</string>
+    <string name="attila">Hoki Attila</string>
+    <string name="armand">Koltai Armand</string>
+    <string name="year">2025</string>
 
 </resources>

@@ -14,16 +14,18 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
 
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
-    private AppCompatButton submitButton;
+    private MaterialButton submitButton;
 
     public HomeFragment() {
-        
+
     }
 
     public static HomeFragment newInstance(String param1, String param2) {
