@@ -5,19 +5,18 @@
     android:id="@+id/savedfragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#800080"
+    android:background="@color/brown"
     tools:context=".SavedFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="SavedFragment"
-        android:textSize="35sp"
-        android:textColor="@color/white"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

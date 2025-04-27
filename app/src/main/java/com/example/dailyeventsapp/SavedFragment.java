@@ -1,12 +1,18 @@
 package com.example.dailyeventsapp;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.dailyeventsapp.adapters.EventAdapter;
+import com.example.dailyeventsapp.dto.EventModel;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,12 +21,12 @@ import android.view.ViewGroup;
  */
 public class SavedFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    private ArrayList<EventModel> eventList;
+    private RecyclerView recyclerView;
+
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +34,6 @@ public class SavedFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SavedFragment newInstance(String param1, String param2) {
         SavedFragment fragment = new SavedFragment();
         Bundle args = new Bundle();
@@ -60,5 +57,31 @@ public class SavedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_saved, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.mRecyclerView);
+        eventList = new ArrayList<>();
+        setUpEventModels();
+
+        EventAdapter adapter = new EventAdapter(getContext(), eventList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void setUpEventModels() {
+        eventList.add(new EventModel("Event1", "1934", "Italy", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event2", "1234", "Denmark", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event3", "1784", "Germany", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event4", "1824", "Ottoman Empire", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event5", "1533", "Hungary", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event6", "1263", "USA", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event7", "1933", "Australia", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event8", "1423", "Belgium", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event9", "1235", "France", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event10", "1113", "England", "Something happened", "wikipedia.com"));
     }
 }
