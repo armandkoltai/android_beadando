@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Use the {@link SavedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedFragment extends Fragment {
+public class SavedFragment extends Fragment implements RecyclerViewInterface {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -67,13 +67,17 @@ public class SavedFragment extends Fragment {
         eventList = new ArrayList<>();
         setUpEventModels();
 
-        EventAdapter adapter = new EventAdapter(getContext(), eventList);
+        EventAdapter adapter = new EventAdapter(getContext(), eventList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void setUpEventModels() {
-        eventList.add(new EventModel("Event1", "1934", "Italy", "Something happened", "wikipedia.com"));
+        eventList.add(new EventModel("Event1", "1934", "Italy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Nullam ac sapien non nunc ultrices tincidunt. Donec nec turpis sed arcu pulvinar scelerisque." +
+                "Aliquam erat volutpat. Sed pulvinar risus nec orci commodo, vel posuere justo convallis."+
+                "Nam ut lacus sed turpis fringilla tincidunt a sed tortor. Duis ut quam a nulla efficitur viverra" +
+                "Nulla facilisi. Curabitur finibus augue at augue cursus, ac placerat sapien eleifend. Suspendisse potenti." +
+                "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam porttitor malesuada elit.", "wikipedia.com"));
         eventList.add(new EventModel("Event2", "1234", "Denmark", "Something happened", "wikipedia.com"));
         eventList.add(new EventModel("Event3", "1784", "Germany", "Something happened", "wikipedia.com"));
         eventList.add(new EventModel("Event4", "1824", "Ottoman Empire", "Something happened", "wikipedia.com"));
@@ -83,5 +87,28 @@ public class SavedFragment extends Fragment {
         eventList.add(new EventModel("Event8", "1423", "Belgium", "Something happened", "wikipedia.com"));
         eventList.add(new EventModel("Event9", "1235", "France", "Something happened", "wikipedia.com"));
         eventList.add(new EventModel("Event10", "1113", "England", "Something happened", "wikipedia.com"));
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        // Új fragment példány
+        DetailFragment detailFragment = new DetailFragment();
+
+        // Adatok átadása Bundle-ben
+        Bundle bundle = new Bundle();
+        bundle.putInt("IMAGE", R.drawable.placeholder);
+        bundle.putString("TITLE", eventList.get(position).getTitle());
+        bundle.putString("YEAR", eventList.get(position).getDate());
+        bundle.putString("LOCATION", eventList.get(position).getLocation());
+        bundle.putString("DESCRIPTION", eventList.get(position).getDescription());
+        bundle.putString("LINK", eventList.get(position).getSourceLink());
+
+        detailFragment.setArguments(bundle);
+
+        // Fragment cseréje
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, detailFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

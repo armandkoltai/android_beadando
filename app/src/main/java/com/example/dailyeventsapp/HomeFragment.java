@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initDatePicker();
-        submitButton = view.findViewById(R.id.submitAppCompatButton);
+        submitButton = view.findViewById(R.id.submitMaterialButton);
         dateButton = view.findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
 

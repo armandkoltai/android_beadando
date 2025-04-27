@@ -6,6 +6,12 @@
     <string name="date_text">Select Date:</string>
     <string name="attila">Hoki Attila</string>
     <string name="armand">Koltai Armand</string>
+    <string name="detail_title">Event title</string>
     <string name="year">2025</string>
+    <string name="detail_date">Year</string>
+    <string name="detail_location">Location</string>
+    <string name="detail_description">Describe what happened</string>
+    <string name="detail_link">www.example.com</string>
+
 
 </resources>
