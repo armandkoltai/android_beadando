@@ -63,7 +63,7 @@ public class DetailFragment extends Fragment {
             titleTextView.setText(title);
             dateTextView.setText(year);
             locationTextView.setText(location);
-            descriptionTextView.setText(description);
+            descriptionTextView.setText(link);
             // linkTextView.setText(link);
         }
 

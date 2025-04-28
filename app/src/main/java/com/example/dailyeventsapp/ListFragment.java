@@ -88,9 +88,11 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
                             }
                         }
 
-                        // EventModel létrehozása a kép URL-el együtt
-                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl);
-                        eventList.add(eventModel);
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            // EventModel létrehozása a kép URL-el együtt
+                            EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl);
+                            eventList.add(eventModel);
+                        }
                     }
                     recyclerView.getAdapter().notifyDataSetChanged();
                 }
