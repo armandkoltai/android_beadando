@@ -7,15 +7,18 @@ public class EventModel {
     private String location;
     private String description;
     private String sourceLink;
+    private String extract;
     private String imageUrl;  // Kép URL
 
-    public EventModel(String title, String date, String location, String description, String sourceLink, String imageUrl) {
+    public EventModel(String title, String date, String location, String description, String sourceLink, String imageUrl, String extract) {
         this.title = title;
         this.date = date;
         this.location = location;
         this.description = description;
         this.sourceLink = sourceLink;
         this.imageUrl = imageUrl;  // Kép URL inicializálása
+        this.extract = extract;
+
     }
 
     // Getters
@@ -42,4 +45,6 @@ public class EventModel {
     public String getImageUrl() {
         return imageUrl;  // Kép URL getter
     }
+
+    public String getExtract() { return extract; }
 }

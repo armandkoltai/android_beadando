@@ -30,10 +30,16 @@ public class WikipediaResponseModel {
 
     public static class Page {
         private String title;
+
+        private String extract;
         private Thumbnail thumbnail;
 
         public String getTitle() {
             return title;
+        }
+
+        public String getExtract() {
+            return extract;
         }
 
         public Thumbnail getThumbnail() {

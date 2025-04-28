@@ -77,6 +77,13 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
                         String date = String.valueOf(event.getYear());
                         String location = event.getPages() != null && !event.getPages().isEmpty() ? event.getPages().get(0).getTitle() : "Unknown";
                         String description = event.getText();
+                        String extract = null;
+                        if (event.getPages() != null && !event.getPages().isEmpty()) {
+                            WikipediaResponseModel.Page page = event.getPages().get(0);
+                            if (page.getExtract() != null) {
+                                extract = page.getExtract();  // ÚJ: Extract mező kimentése
+                            }
+                        }
                         String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
 
                         // Kép URL lekérése
@@ -90,7 +97,7 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
 
                         if (imageUrl != null && !imageUrl.isEmpty()) {
                             // EventModel létrehozása a kép URL-el együtt
-                            EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl);
+                            EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl, extract);
                             eventList.add(eventModel);
                         }
                     }
@@ -137,6 +144,7 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         bundle.putString("LOCATION", eventList.get(position).getLocation());
         bundle.putString("DESCRIPTION", eventList.get(position).getDescription());
         bundle.putString("LINK", eventList.get(position).getSourceLink());
+        bundle.putString("EXTRACT", eventList.get(position).getExtract());
 
         detailFragment.setArguments(bundle);
 

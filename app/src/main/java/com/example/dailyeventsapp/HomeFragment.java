@@ -167,7 +167,14 @@ public class HomeFragment extends Fragment {
                         String description = event.getText();
                         String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
                         String thumbnail = event.getText();
-                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink, thumbnail);
+                        String extract = null;
+                        if (event.getPages() != null && !event.getPages().isEmpty()) {
+                            WikipediaResponseModel.Page page = event.getPages().get(0);
+                            if (page.getExtract() != null) {
+                                extract = page.getExtract();  // ÚJ: Extract mező kimentése
+                            }
+                        }
+                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink, thumbnail, extract);
                         eventModels.add(eventModel);
                     }
                     eventAdapter.notifyDataSetChanged();

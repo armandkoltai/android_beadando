@@ -40,6 +40,7 @@ public class DetailFragment extends Fragment {
             String description = args.getString("DESCRIPTION");
             String link = args.getString("LINK");
             int imageResId = args.getInt("IMAGE");
+            String extract = args.getString("EXTRACT");
 
             // Kép megjelenítése Glide használatával
             ImageView eventImageView = view.findViewById(R.id.eventImageView);
@@ -56,15 +57,16 @@ public class DetailFragment extends Fragment {
             TextView dateTextView = view.findViewById(R.id.dateTextView);
             TextView locationTextView = view.findViewById(R.id.locationTextView);
             TextView descriptionTextView = view.findViewById(R.id.descriptionTextView);
-            // TextView linkTextView = view.findViewById(R.id.linkTextView);
+            TextView linkTextView = view.findViewById(R.id.linkTextView);
 
             // Adatok beállítása
             eventImageView.setImageResource(imageResId);
             titleTextView.setText(title);
             dateTextView.setText(year);
             locationTextView.setText(location);
-            descriptionTextView.setText(link);
-            // linkTextView.setText(link);
+            descriptionTextView.setText(extract);
+            linkTextView.setText(link);
+
         }
 
         // Vissza gomb kezelése
