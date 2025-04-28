@@ -74,7 +74,7 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
                     eventList.clear();
                     for (WikipediaResponseModel.Event event : response.body().getEvents()) {
                         String title = event.getText();
-                        String date = getMonthFormat(month) + " " + String.format("%02d", day);
+                        String date = String.valueOf(event.getYear());
                         String location = event.getPages() != null && !event.getPages().isEmpty() ? event.getPages().get(0).getTitle() : "Unknown";
                         String description = event.getText();
                         String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
