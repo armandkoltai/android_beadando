@@ -1,13 +1,15 @@
 package com.example.dailyeventsapp;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "events")
 public class EventEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+
+    @PrimaryKey
+    @NonNull
     private String title;
     private String date;
     private String location;
@@ -27,13 +29,7 @@ public class EventEntity {
     }
 
     // Getterek és setterek
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;

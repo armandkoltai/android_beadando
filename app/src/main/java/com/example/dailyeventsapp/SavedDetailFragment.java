@@ -1,6 +1,7 @@
 package com.example.dailyeventsapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class SavedDetailFragment extends Fragment {
             linkTextView.setText(link);
 
             // Inicializáljuk a Room adatbázist
-            db = Room.databaseBuilder(getContext(), AppDatabase.class, "events-db")
+            db = Room.databaseBuilder(getContext(), AppDatabase.class, "event_database")
                     .fallbackToDestructiveMigration()
                     .build();
 
@@ -90,22 +91,40 @@ public class SavedDetailFragment extends Fragment {
 
     // Esemény törlése az adatbázisból
     private void removeEventFromDatabase(String title) {
+        Log.d("Database", "removeEventFromDatabase triggered");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Az esemény eltávolítása az adatbázisból
-                db.eventDao().deleteEventByTitle(title);
+                try {
+                    // Az esemény eltávolítása az adatbázisból
+                    Log.d("Database", "Attempting to delete event with title: " + title);
 
-                // Az UI frissítése, miután a törlés megtörtént
-                requireActivity().runOnUiThread(() -> {
-                    // Törlés után frissítjük a SavedFragment-et
-                    getParentFragmentManager().popBackStack();
-                    SavedFragment savedFragment = new SavedFragment();
-                    requireActivity().getSupportFragmentManager().beginTransaction();
-                    // Visszatérés az előző fragmenthez
-                    getParentFragmentManager().popBackStack();
-                });
+                    // Ellenőrizzük, hogy van-e ilyen esemény
+                    EventEntity event = db.eventDao().getEventByTitle(title);
+                    if (event != null) {
+                        Log.d("Database", "Event found: " + event.getTitle());
+
+                        // Törlés végrehajtása
+                        db.eventDao().deleteEventByTitle(title);
+                        Log.d("Database", "Event successfully deleted: " + title);
+                    } else {
+                        Log.d("Database", "No event found with title: " + title);
+                    }
+                    db.eventDao().deleteEventByTitle(title);
+
+                    // Frissítjük az UI-t, miután a törlés megtörtént
+                    requireActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.savedfragment, new SavedFragment())  // Helyes ID-t használunk
+                            .addToBackStack(null)
+                            .commit();
+
+                } catch (Exception e) {
+                    // Hibakezelés
+                    Log.e("Database", "Error occurred while deleting event: " + e.getMessage(), e);
+                }
             }
-        }).start();
+        }).start(); // A szál indítása
     }
 }

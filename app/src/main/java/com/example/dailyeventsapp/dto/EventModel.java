@@ -1,7 +1,10 @@
 package com.example.dailyeventsapp.dto;
 
+import androidx.room.PrimaryKey;
+
 public class EventModel {
 
+    @PrimaryKey
     private String title;
     private String date;
     private String location;
