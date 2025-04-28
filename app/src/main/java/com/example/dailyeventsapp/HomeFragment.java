@@ -3,9 +3,10 @@ package com.example.dailyeventsapp;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,28 +15,35 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.example.dailyeventsapp.adapters.EventAdapter;
+import com.example.dailyeventsapp.dto.EventModel;
+import com.example.dailyeventsapp.dto.WikipediaResponseModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
     private MaterialButton submitButton;
+    private RecyclerView recyclerView;
+    private EventAdapter eventAdapter;
+    private ArrayList<EventModel> eventModels = new ArrayList<>();
 
-    public HomeFragment() {
+    private WikipediaApiService wikipediaApiService;
 
-    }
+    private int selectedMonth;
+    private int selectedDay;
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public HomeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,14 +53,27 @@ public class HomeFragment extends Fragment {
         initDatePicker();
         submitButton = view.findViewById(R.id.submitMaterialButton);
         dateButton = view.findViewById(R.id.datePickerButton);
+        //recyclerView = view.findViewById(R.id.recyclerView);
+
         dateButton.setText(getTodaysDate());
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        eventAdapter = new EventAdapter(getContext(), eventModels, position -> {});
+        recyclerView.setAdapter(eventAdapter);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://en.wikipedia.org/api/rest_v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        wikipediaApiService = retrofit.create(WikipediaApiService.class);
+
         dateButton.setOnClickListener(v -> openDatePicker());
+
         submitButton.setOnClickListener(v -> {
             String selectedDate = dateButton.getText().toString();
-            Toast.makeText(requireContext(), "Selected date: " + selectedDate, Toast.LENGTH_SHORT).show();
+            fetchEvents(selectedMonth, selectedDay);
         });
-
 
         return view;
     }
@@ -61,12 +82,16 @@ public class HomeFragment extends Fragment {
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH) + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
+        selectedMonth = month;
+        selectedDay = day;
         return makeDateString(day, month);
     }
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
             month += 1;
+            selectedMonth = month;
+            selectedDay = dayOfMonth;
             String date = makeDateString(dayOfMonth, month);
             dateButton.setText(date);
         };
@@ -76,11 +101,9 @@ public class HomeFragment extends Fragment {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(requireContext(), style, dateSetListener, year, month, day);
-
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
         int yearId = getResources().getIdentifier("year", "id", "android");
@@ -114,5 +137,36 @@ public class HomeFragment extends Fragment {
 
     private void openDatePicker() {
         datePickerDialog.show();
+    }
+
+    private void fetchEvents(int month, int day) {
+        Call<WikipediaResponseModel> call = wikipediaApiService.getEventsForDate(month, day);
+
+        call.enqueue(new Callback<WikipediaResponseModel>() {
+            @Override
+            public void onResponse(Call<WikipediaResponseModel> call, Response<WikipediaResponseModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    eventModels.clear();
+                    for (WikipediaResponseModel.Event event : response.body().getEvents()) {
+                        String title = event.getText();
+                        String date = getMonthFormat(month) + " " + String.format("%02d", day);
+                        String location = event.getPages() != null && !event.getPages().isEmpty() ? event.getPages().get(0).getTitle() : "Unknown";
+                        String description = event.getText();
+                        String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
+
+                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink);
+                        eventModels.add(eventModel);
+                    }
+                    eventAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Hiba az események betöltésekor", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WikipediaResponseModel> call, Throwable t) {
+                Toast.makeText(getContext(), "Hálózati hiba: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
