@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
@@ -14,26 +13,27 @@ import androidx.room.Room;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 
-public class DetailFragment extends Fragment {
+public class SavedDetailFragment extends Fragment {
 
     private AppDatabase db;
+    private EventEntity eventEntity;
 
-    public DetailFragment() {
-        // Kötelező üres konstruktor
+    public SavedDetailFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        return inflater.inflate(R.layout.fragment_saved_detail, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Adatok átvétele
+        // Itt fogadjuk az átadott adatokat
         Bundle args = getArguments();
         if (args != null) {
             String imageUrl = args.getString("IMAGE_URL");
@@ -42,20 +42,19 @@ public class DetailFragment extends Fragment {
             String location = args.getString("LOCATION");
             String description = args.getString("DESCRIPTION");
             String link = args.getString("LINK");
-            int imageResId = args.getInt("IMAGE");
             String extract = args.getString("EXTRACT");
 
-            // Kép betöltése Glide-dal
+            // Kép megjelenítése Glide használatával
             ImageView eventImageView = view.findViewById(R.id.eventImageView);
             if (imageUrl != null) {
                 Glide.with(getContext())
                         .load(imageUrl)
                         .into(eventImageView);
             } else {
-                eventImageView.setImageResource(R.drawable.placeholder);
+                eventImageView.setImageResource(R.drawable.placeholder);  // Alapértelmezett kép
             }
 
-            // Nézetek
+            // A Fragmenthez tartozó nézetek keresése
             TextView titleTextView = view.findViewById(R.id.titleTextView);
             TextView dateTextView = view.findViewById(R.id.dateTextView);
             TextView locationTextView = view.findViewById(R.id.locationTextView);
@@ -69,7 +68,7 @@ public class DetailFragment extends Fragment {
             descriptionTextView.setText(extract);
             linkTextView.setText(link);
 
-            // Adatbázis inicializálása
+            // Inicializáljuk a Room adatbázist
             db = Room.databaseBuilder(getContext(), AppDatabase.class, "events-db")
                     .fallbackToDestructiveMigration()
                     .build();
@@ -77,33 +76,29 @@ public class DetailFragment extends Fragment {
             // Mentés gomb kezelése
             MaterialButton saveButton = view.findViewById(R.id.saveMaterialButton);
             saveButton.setOnClickListener(v -> {
+                // EventEntity létrehozása, ha új adatot szeretnél menteni
                 EventEntity eventEntity = new EventEntity(
                         title, year, location, description, link, imageUrl, extract
                 );
+                // Az esemény mentése, ha szükséges
                 saveEventToDatabase(eventEntity);
             });
 
             // Vissza gomb kezelése
             MaterialButton backButton = view.findViewById(R.id.backButton);
             backButton.setOnClickListener(v -> {
+                // Visszatérés az előző fragmenthez
                 getParentFragmentManager().popBackStack();
             });
         }
     }
 
-    // Esemény mentése az adatbázisba, duplikáció ellenőrzéssel
+    // Esemény mentése a Room adatbázisba
     private void saveEventToDatabase(EventEntity eventEntity) {
-        new Thread(() -> {
-            EventEntity existingEvent = db.eventDao().getEventByTitle(eventEntity.getTitle());
-            if (existingEvent == null) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 db.eventDao().insertEvent(eventEntity);
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Esemény mentve!", Toast.LENGTH_SHORT).show()
-                );
-            } else {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Ez az esemény már mentve van!", Toast.LENGTH_SHORT).show()
-                );
             }
         }).start();
     }

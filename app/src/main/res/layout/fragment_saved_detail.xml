@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-
+        <!-- Kép -->
         <ImageView
             android:id="@+id/eventImageView"
             android:layout_width="164dp"
@@ -24,6 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Cím -->
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/eventImageView" />
 
+        <!-- Dátum -->
         <TextView
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
@@ -55,6 +57,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
+        <!-- Helyszín -->
         <TextView
             android:id="@+id/locationTextView"
             android:layout_width="150dp"
@@ -71,6 +74,7 @@
             app:layout_constraintStart_toEndOf="@+id/dateTextView"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
+        <!-- Leírás -->
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="wrap_content"
@@ -85,7 +89,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
 
-
+        <!-- Mentés gomb -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveMaterialButton"
             android:layout_width="wrap_content"
@@ -118,6 +122,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/saveMaterialButton" />
 
+        <!-- Link Text -->
         <TextView
             android:id="@+id/linkTextView"
             android:layout_width="wrap_content"
@@ -131,7 +136,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
             app:layout_constraintVertical_bias="0.0" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
