@@ -2,21 +2,23 @@ package com.example.dailyeventsapp.dto;
 
 public class EventModel {
 
-    String title;
-    String date;
+    private String title;
+    private String date;
+    private String location;
+    private String description;
+    private String sourceLink;
+    private String imageUrl;  // Kép URL
 
-    String location;
-    String description;
-    String sourceLink;
-
-    public EventModel(String title, String date,String location, String description, String sourceLink) {
+    public EventModel(String title, String date, String location, String description, String sourceLink, String imageUrl) {
         this.title = title;
         this.date = date;
         this.location = location;
         this.description = description;
         this.sourceLink = sourceLink;
+        this.imageUrl = imageUrl;  // Kép URL inicializálása
     }
 
+    // Getters
     public String getTitle() {
         return title;
     }
@@ -35,5 +37,9 @@ public class EventModel {
 
     public String getSourceLink() {
         return sourceLink;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;  // Kép URL getter
     }
 }

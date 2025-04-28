@@ -41,6 +41,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.tvTitle.setText(eventModels.get(position).getTitle());
         holder.tvDate.setText(eventModels.get(position).getDate());
         holder.tvLocation.setText(eventModels.get(position).getLocation());
+
+
     }
 
     @Override

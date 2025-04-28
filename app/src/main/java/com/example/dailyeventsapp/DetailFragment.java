@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 
 public class DetailFragment extends Fragment {
@@ -31,6 +33,7 @@ public class DetailFragment extends Fragment {
         // Itt fogadjuk az átadott adatokat
         Bundle args = getArguments();
         if (args != null) {
+            String imageUrl = args.getString("IMAGE_URL");
             String title = args.getString("TITLE");
             String year = args.getString("YEAR");
             String location = args.getString("LOCATION");
@@ -38,8 +41,17 @@ public class DetailFragment extends Fragment {
             String link = args.getString("LINK");
             int imageResId = args.getInt("IMAGE");
 
-            // A Fragmenthez tartozó nézetek keresése
+            // Kép megjelenítése Glide használatával
             ImageView eventImageView = view.findViewById(R.id.eventImageView);
+            if (imageUrl != null) {
+                Glide.with(getContext())
+                        .load(imageUrl)
+                        .into(eventImageView);
+            } else {
+                eventImageView.setImageResource(R.drawable.placeholder);  // Alapértelmezett kép
+            }
+
+            // A Fragmenthez tartozó nézetek keresése
             TextView titleTextView = view.findViewById(R.id.titleTextView);
             TextView dateTextView = view.findViewById(R.id.dateTextView);
             TextView locationTextView = view.findViewById(R.id.locationTextView);

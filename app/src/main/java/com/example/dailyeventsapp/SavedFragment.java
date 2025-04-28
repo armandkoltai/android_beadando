@@ -77,16 +77,16 @@ public class SavedFragment extends Fragment implements RecyclerViewInterface {
                 "Aliquam erat volutpat. Sed pulvinar risus nec orci commodo, vel posuere justo convallis."+
                 "Nam ut lacus sed turpis fringilla tincidunt a sed tortor. Duis ut quam a nulla efficitur viverra" +
                 "Nulla facilisi. Curabitur finibus augue at augue cursus, ac placerat sapien eleifend. Suspendisse potenti." +
-                "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam porttitor malesuada elit.", "wikipedia.com"));
-        eventList.add(new EventModel("Event2", "1234", "Denmark", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event3", "1784", "Germany", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event4", "1824", "Ottoman Empire", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event5", "1533", "Hungary", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event6", "1263", "USA", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event7", "1933", "Australia", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event8", "1423", "Belgium", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event9", "1235", "France", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event10", "1113", "England", "Something happened", "wikipedia.com"));
+                "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam porttitor malesuada elit.", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event2", "1234", "Denmark", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event3", "1784", "Germany", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event4", "1824", "Ottoman Empire", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event5", "1533", "Hungary", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event6", "1263", "USA", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event7", "1933", "Australia", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event8", "1423", "Belgium", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event9", "1235", "France", "Something happened", "wikipedia.com", "keplink.png"));
+        eventList.add(new EventModel("Event10", "1113", "England", "Something happened", "wikipedia.com", "keplink.png"));
     }
 
     @Override

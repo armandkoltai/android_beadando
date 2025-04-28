@@ -71,13 +71,14 @@ public class HomeFragment extends Fragment {
         dateButton.setOnClickListener(v -> openDatePicker());
 
         submitButton.setOnClickListener(v -> {
-            // Cseréld le a fragmentet a HomeFragment-ről a ListFragment-re
+            // Pass the selected month and day to the ListFragment
             ListFragment listFragment = new ListFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("MONTH", selectedMonth);
             bundle.putInt("DAY", selectedDay);
             listFragment.setArguments(bundle);
 
+            // Switch fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frameLayout, listFragment);
             transaction.addToBackStack(null);
@@ -165,8 +166,8 @@ public class HomeFragment extends Fragment {
                         String location = event.getPages() != null && !event.getPages().isEmpty() ? event.getPages().get(0).getTitle() : "Unknown";
                         String description = event.getText();
                         String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
-
-                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink);
+                        String thumbnail = event.getText();
+                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink, thumbnail);
                         eventModels.add(eventModel);
                     }
                     eventAdapter.notifyDataSetChanged();

@@ -79,7 +79,17 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
                         String description = event.getText();
                         String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
 
-                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink);
+                        // Kép URL lekérése
+                        String imageUrl = null;
+                        if (event.getPages() != null && !event.getPages().isEmpty()) {
+                            WikipediaResponseModel.Page page = event.getPages().get(0);
+                            if (page.getThumbnail() != null) {
+                                imageUrl = page.getThumbnail().getSource();  // Kép URL lekérése
+                            }
+                        }
+
+                        // EventModel létrehozása a kép URL-el együtt
+                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl);
                         eventList.add(eventModel);
                     }
                     recyclerView.getAdapter().notifyDataSetChanged();
@@ -118,7 +128,8 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
 
         // Passing data through Bundle
         Bundle bundle = new Bundle();
-        bundle.putInt("IMAGE", R.drawable.placeholder);
+        String imageUrl = eventList.get(position).getImageUrl(); // Get imageUrl from EventModel
+        bundle.putString("IMAGE_URL", imageUrl);  // Pass image URL as string
         bundle.putString("TITLE", eventList.get(position).getTitle());
         bundle.putString("YEAR", eventList.get(position).getDate());
         bundle.putString("LOCATION", eventList.get(position).getLocation());
