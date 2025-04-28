@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +16,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.dailyeventsapp.adapters.EventAdapter;
 import com.example.dailyeventsapp.dto.EventModel;
 import com.example.dailyeventsapp.dto.WikipediaResponseModel;
 import com.google.android.material.button.MaterialButton;
+
+import com.example.dailyeventsapp.MainActivity;
+
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,12 +77,18 @@ public class HomeFragment extends Fragment {
         dateButton.setOnClickListener(v -> openDatePicker());
 
         submitButton.setOnClickListener(v -> {
-            String selectedDate = dateButton.getText().toString();
-            fetchEvents(selectedMonth, selectedDay);
+            // Cseréld le a fragmentet a HomeFragment-ről a SecondFragment-re
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frameLayout, new ListFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         return view;
     }
+
+
+
 
     private String getTodaysDate() {
         Calendar cal = Calendar.getInstance();
