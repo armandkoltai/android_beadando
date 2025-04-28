@@ -10,16 +10,22 @@ import android.view.ViewGroup;
 
 import com.example.dailyeventsapp.adapters.EventAdapter;
 import com.example.dailyeventsapp.dto.EventModel;
+import com.example.dailyeventsapp.WikipediaResponseModel;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ListFragment extends Fragment implements RecyclerViewInterface {
 
     private ArrayList<EventModel> eventList;
     private RecyclerView recyclerView;
+
+    private WikipediaApiService wikipediaApiService;
 
     public ListFragment() {
         // Required empty public constructor
@@ -39,7 +45,18 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         // Initialize RecyclerView and Event list
         recyclerView = view.findViewById(R.id.eventRecyclerView);
         eventList = new ArrayList<>();
-        setUpEventModels();
+
+        // Initialize Retrofit and API service
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://en.wikipedia.org/api/rest_v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        wikipediaApiService = retrofit.create(WikipediaApiService.class);
+
+        // Fetch events for a specific date
+        int selectedMonth = getArguments() != null ? getArguments().getInt("MONTH", 1) : 1;
+        int selectedDay = getArguments() != null ? getArguments().getInt("DAY", 1) : 1;
+        fetchEvents(selectedMonth, selectedDay);
 
         // Initialize and set the adapter
         EventAdapter adapter = new EventAdapter(getContext(), eventList, this);
@@ -47,18 +64,51 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void setUpEventModels() {
-        // Add sample data
-        eventList.add(new EventModel("Event1", "1934", "Italy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.", "wikipedia.com"));
-        eventList.add(new EventModel("Event2", "1234", "Denmark", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event3", "1784", "Germany", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event4", "1824", "Ottoman Empire", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event5", "1533", "Hungary", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event6", "1263", "USA", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event7", "1933", "Australia", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event8", "1423", "Belgium", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event9", "1235", "France", "Something happened", "wikipedia.com"));
-        eventList.add(new EventModel("Event10", "1113", "England", "Something happened", "wikipedia.com"));
+    private void fetchEvents(int month, int day) {
+        Call<WikipediaResponseModel> call = wikipediaApiService.getEventsForDate(month, day);
+
+        call.enqueue(new Callback<WikipediaResponseModel>() {
+            @Override
+            public void onResponse(Call<WikipediaResponseModel> call, Response<WikipediaResponseModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    eventList.clear();
+                    for (WikipediaResponseModel.Event event : response.body().getEvents()) {
+                        String title = event.getText();
+                        String date = getMonthFormat(month) + " " + String.format("%02d", day);
+                        String location = event.getPages() != null && !event.getPages().isEmpty() ? event.getPages().get(0).getTitle() : "Unknown";
+                        String description = event.getText();
+                        String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
+
+                        EventModel eventModel = new EventModel(title, date, location, description, sourceLink);
+                        eventList.add(eventModel);
+                    }
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WikipediaResponseModel> call, Throwable t) {
+                // Handle failure (e.g., show a toast message)
+            }
+        });
+    }
+
+    private String getMonthFormat(int month) {
+        switch (month) {
+            case 1: return "JAN";
+            case 2: return "FEB";
+            case 3: return "MAR";
+            case 4: return "APR";
+            case 5: return "MAY";
+            case 6: return "JUN";
+            case 7: return "JUL";
+            case 8: return "AUG";
+            case 9: return "SEP";
+            case 10: return "OCT";
+            case 11: return "NOV";
+            case 12: return "DEC";
+            default: return "JAN";
+        }
     }
 
     @Override

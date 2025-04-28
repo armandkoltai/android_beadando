@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp.dto;
+package com.example.dailyeventsapp;
 
 import java.util.List;
 

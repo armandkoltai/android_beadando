@@ -3,11 +3,9 @@ package com.example.dailyeventsapp;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import androidx.appcompat.widget.AppCompatButton;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -16,14 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.dailyeventsapp.adapters.EventAdapter;
 import com.example.dailyeventsapp.dto.EventModel;
-import com.example.dailyeventsapp.dto.WikipediaResponseModel;
 import com.google.android.material.button.MaterialButton;
-
-import com.example.dailyeventsapp.MainActivity;
-
 
 
 import java.util.ArrayList;
