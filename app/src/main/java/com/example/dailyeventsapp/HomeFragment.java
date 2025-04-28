@@ -71,9 +71,15 @@ public class HomeFragment extends Fragment {
         dateButton.setOnClickListener(v -> openDatePicker());
 
         submitButton.setOnClickListener(v -> {
-            // Cseréld le a fragmentet a HomeFragment-ről a SecondFragment-re
+            // Cseréld le a fragmentet a HomeFragment-ről a ListFragment-re
+            ListFragment listFragment = new ListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("MONTH", selectedMonth);
+            bundle.putInt("DAY", selectedDay);
+            listFragment.setArguments(bundle);
+
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.frameLayout, new ListFragment());
+            transaction.replace(R.id.frameLayout, listFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         });

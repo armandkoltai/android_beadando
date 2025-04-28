@@ -54,8 +54,8 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         wikipediaApiService = retrofit.create(WikipediaApiService.class);
 
         // Fetch events for a specific date
-        int selectedMonth = getArguments() != null ? getArguments().getInt("MONTH", 1) : 1;
-        int selectedDay = getArguments() != null ? getArguments().getInt("DAY", 1) : 1;
+        int selectedMonth = getArguments() != null ? getArguments().getInt("MONTH", 1) : 2;
+        int selectedDay = getArguments() != null ? getArguments().getInt("DAY", 1) : 2;
         fetchEvents(selectedMonth, selectedDay);
 
         // Initialize and set the adapter
