@@ -57,9 +57,9 @@ public class HomeFragment extends Fragment {
 
         dateButton.setText(getTodaysDate());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         eventAdapter = new EventAdapter(getContext(), eventModels, position -> {});
-        recyclerView.setAdapter(eventAdapter);
+        //recyclerView.setAdapter(eventAdapter);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://en.wikipedia.org/api/rest_v1/")
