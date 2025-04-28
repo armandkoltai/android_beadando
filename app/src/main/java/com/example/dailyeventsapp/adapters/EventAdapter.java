@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.dailyeventsapp.R;
 import com.example.dailyeventsapp.RecyclerViewInterface;
 import com.example.dailyeventsapp.dto.EventModel;
@@ -21,6 +22,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     ArrayList<EventModel> eventModels;
+
     public EventAdapter(Context context, ArrayList<EventModel> eventModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.eventModels = eventModels;
@@ -37,12 +39,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.MyViewHolder holder, int position) {
+        EventModel event = eventModels.get(position);
+
+        // Alapértelmezett kép
         holder.imageView.setImageResource(R.drawable.placeholder);
-        holder.tvTitle.setText(eventModels.get(position).getTitle());
-        holder.tvDate.setText(eventModels.get(position).getDate());
-        holder.tvLocation.setText(eventModels.get(position).getLocation());
 
+        // Események adatai
+        holder.tvTitle.setText(event.getTitle());
+        holder.tvDate.setText(event.getDate());
+        holder.tvLocation.setText(event.getLocation());
 
+        // Kép URL betöltése Glide segítségével
+        String imageUrl = event.getImageUrl();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.placeholder)  // Alapértelmezett kép, ha a kép nem elérhető
+                    .into(holder.imageView);
+        } else {
+            // Ha nincs kép, akkor marad a helyettesítő kép
+            holder.imageView.setImageResource(R.drawable.placeholder);
+        }
     }
 
     @Override
@@ -53,7 +70,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView tvTitle, tvDate,tvLocation;
+        TextView tvTitle, tvDate, tvLocation;
+
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -74,5 +92,4 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             });
         }
     }
-
 }
