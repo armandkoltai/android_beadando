@@ -71,8 +71,8 @@ public class SavedFragment extends Fragment {
                     requireActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, savedDetailFragment)
-                            .addToBackStack(null)
+                            .replace(R.id.savedfragment, savedDetailFragment)  // A fragment_container helyére lecseréljük az új fragmentet
+                            .addToBackStack(null)  // Lehetővé teszi, hogy visszalépjünk a mentett események listájára
                             .commit();
                 });
                 recyclerView.setAdapter(eventAdapter);
