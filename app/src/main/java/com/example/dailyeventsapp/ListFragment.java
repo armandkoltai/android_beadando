@@ -1,19 +1,16 @@
 package com.example.dailyeventsapp;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.dailyeventsapp.adapters.EventAdapter;
 import com.example.dailyeventsapp.dto.EventModel;
-import com.example.dailyeventsapp.WikipediaResponseModel;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +21,6 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
 
     private ArrayList<EventModel> eventList;
     private RecyclerView recyclerView;
-
     private WikipediaApiService wikipediaApiService;
 
     public ListFragment() {
@@ -42,8 +38,9 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize RecyclerView and Event list
+        // Initialize RecyclerView, TextView, and Event list
         recyclerView = view.findViewById(R.id.eventRecyclerView);
+        TextView textView = view.findViewById(R.id.textView2);
         eventList = new ArrayList<>();
 
         // Initialize Retrofit and API service
@@ -56,6 +53,11 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         // Fetch events for a specific date
         int selectedMonth = getArguments() != null ? getArguments().getInt("MONTH", 1) : 2;
         int selectedDay = getArguments() != null ? getArguments().getInt("DAY", 1) : 2;
+
+        // Set TextView text to show in "MONTH. DAY." format
+        String monthName = getMonthFormat(selectedMonth);
+        textView.setText(monthName + ". " + selectedDay + ".");
+
         fetchEvents(selectedMonth, selectedDay);
 
         // Initialize and set the adapter
@@ -81,22 +83,22 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
                         if (event.getPages() != null && !event.getPages().isEmpty()) {
                             WikipediaResponseModel.Page page = event.getPages().get(0);
                             if (page.getExtract() != null) {
-                                extract = page.getExtract();  // ÚJ: Extract mező kimentése
+                                extract = page.getExtract();
                             }
                         }
-                        String sourceLink = event.getPages() != null && !event.getPages().isEmpty() ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_") : "";
+                        String sourceLink = event.getPages() != null && !event.getPages().isEmpty()
+                                ? "https://en.wikipedia.org/wiki/" + event.getPages().get(0).getTitle().replace(" ", "_")
+                                : "";
 
-                        // Kép URL lekérése
                         String imageUrl = null;
                         if (event.getPages() != null && !event.getPages().isEmpty()) {
                             WikipediaResponseModel.Page page = event.getPages().get(0);
                             if (page.getThumbnail() != null) {
-                                imageUrl = page.getThumbnail().getSource();  // Kép URL lekérése
+                                imageUrl = page.getThumbnail().getSource();
                             }
                         }
 
                         if (imageUrl != null && !imageUrl.isEmpty()) {
-                            // EventModel létrehozása a kép URL-el együtt
                             EventModel eventModel = new EventModel(title, date, location, description, sourceLink, imageUrl, extract);
                             eventList.add(eventModel);
                         }
@@ -135,10 +137,9 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
         // When an item is clicked, pass data to DetailFragment
         DetailFragment detailFragment = new DetailFragment();
 
-        // Passing data through Bundle
         Bundle bundle = new Bundle();
-        String imageUrl = eventList.get(position).getImageUrl(); // Get imageUrl from EventModel
-        bundle.putString("IMAGE_URL", imageUrl);  // Pass image URL as string
+        String imageUrl = eventList.get(position).getImageUrl();
+        bundle.putString("IMAGE_URL", imageUrl);
         bundle.putString("TITLE", eventList.get(position).getTitle());
         bundle.putString("YEAR", eventList.get(position).getDate());
         bundle.putString("LOCATION", eventList.get(position).getLocation());
@@ -148,7 +149,6 @@ public class ListFragment extends Fragment implements RecyclerViewInterface {
 
         detailFragment.setArguments(bundle);
 
-        // Replace fragment with the new DetailFragment
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, detailFragment)
                 .addToBackStack(null)

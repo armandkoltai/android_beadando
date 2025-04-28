@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
@@ -106,11 +107,13 @@ public class SavedDetailFragment extends Fragment {
 
                         // Törlés végrehajtása
                         db.eventDao().deleteEventByTitle(title);
+                        requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Event successfully deleted!", Toast.LENGTH_SHORT).show()
+                        );
                         Log.d("Database", "Event successfully deleted: " + title);
                     } else {
                         Log.d("Database", "No event found with title: " + title);
                     }
-                    db.eventDao().deleteEventByTitle(title);
 
                     // Frissítjük az UI-t, miután a törlés megtörtént
                     requireActivity()
