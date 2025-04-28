@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import androidx.room.Room;
 
 public class DetailFragment extends Fragment {
+
+    private AppDatabase db;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -60,20 +63,43 @@ public class DetailFragment extends Fragment {
             TextView linkTextView = view.findViewById(R.id.linkTextView);
 
             // Adatok beállítása
-            eventImageView.setImageResource(imageResId);
             titleTextView.setText(title);
             dateTextView.setText(year);
             locationTextView.setText(location);
             descriptionTextView.setText(extract);
             linkTextView.setText(link);
 
-        }
+            // Inicializáljuk a Room adatbázist
+            db = Room.databaseBuilder(getContext(), AppDatabase.class, "events-db")
+                    .fallbackToDestructiveMigration()
+                    .build();
 
-        // Vissza gomb kezelése
-        MaterialButton backButton = view.findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> {
-            // Visszatérés a ListFragment-re
-            getParentFragmentManager().popBackStack();
-        });
+            // Mentés gomb kezelés
+            MaterialButton saveButton = view.findViewById(R.id.saveMaterialButton);
+            saveButton.setOnClickListener(v -> {
+                // EventEntity létrehozása
+                EventEntity eventEntity = new EventEntity(
+                        title, year, location, description, link, imageUrl, extract
+                );
+                saveEventToDatabase(eventEntity);
+            });
+
+            // Vissza gomb kezelése
+            MaterialButton backButton = view.findViewById(R.id.backButton);
+            backButton.setOnClickListener(v -> {
+                // Visszatérés a ListFragment-re
+                getParentFragmentManager().popBackStack();
+            });
+        }
+    }
+
+    // Esemény mentése a Room adatbázisba
+    private void saveEventToDatabase(EventEntity eventEntity) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db.eventDao().insertEvent(eventEntity);
+            }
+        }).start();
     }
 }
