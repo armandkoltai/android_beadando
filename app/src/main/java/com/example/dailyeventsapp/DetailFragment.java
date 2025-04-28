@@ -70,9 +70,7 @@ public class DetailFragment extends Fragment {
             linkTextView.setText(link);
 
             // Inicializáljuk a Room adatbázist
-            db = Room.databaseBuilder(getContext(), AppDatabase.class, "events-db")
-                    .fallbackToDestructiveMigration()
-                    .build();
+            db = AppDatabase.getInstance(getContext());
 
             // Mentés gomb kezelés
             MaterialButton saveButton = view.findViewById(R.id.saveMaterialButton);
