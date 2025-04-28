@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
@@ -69,13 +68,11 @@ public class DetailFragment extends Fragment {
             descriptionTextView.setText(extract);
             linkTextView.setText(link);
 
-            // Adatbázis inicializálása
-            db = Room.databaseBuilder(getContext(), AppDatabase.class, "events-db")
-                    .fallbackToDestructiveMigration()
-                    .build();
+            // Singleton adatbázis inicializálás (nem új build!)
+            db = AppDatabase.getInstance(getContext());
 
             // Mentés gomb kezelése
-            MaterialButton saveButton = view.findViewById(R.id.saveMaterialButton);
+            MaterialButton saveButton = view.findViewById(R.id.removeMaterialButton);
             saveButton.setOnClickListener(v -> {
                 EventEntity eventEntity = new EventEntity(
                         title, year, location, description, link, imageUrl, extract
@@ -96,7 +93,16 @@ public class DetailFragment extends Fragment {
         new Thread(() -> {
             EventEntity existingEvent = db.eventDao().getEventByTitle(eventEntity.getTitle());
             if (existingEvent == null) {
-                db.eventDao().insertEvent(eventEntity);
+                // Manuális INSERT használata
+                db.eventDao().insertEventManual(
+                        eventEntity.getTitle(),
+                        eventEntity.getDate(),
+                        eventEntity.getLocation(),
+                        eventEntity.getDescription(),
+                        eventEntity.getSourceLink(),
+                        eventEntity.getImageUrl(),
+                        eventEntity.getExtract()
+                );
                 requireActivity().runOnUiThread(() ->
                         Toast.makeText(getContext(), "Esemény mentve!", Toast.LENGTH_SHORT).show()
                 );

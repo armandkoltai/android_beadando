@@ -16,7 +16,6 @@ import com.google.android.material.button.MaterialButton;
 public class SavedDetailFragment extends Fragment {
 
     private AppDatabase db;
-    private EventEntity eventEntity;
 
     public SavedDetailFragment() {
         // Required empty public constructor
@@ -73,15 +72,11 @@ public class SavedDetailFragment extends Fragment {
                     .fallbackToDestructiveMigration()
                     .build();
 
-            // Mentés gomb kezelése
-            MaterialButton saveButton = view.findViewById(R.id.saveMaterialButton);
-            saveButton.setOnClickListener(v -> {
-                // EventEntity létrehozása, ha új adatot szeretnél menteni
-                EventEntity eventEntity = new EventEntity(
-                        title, year, location, description, link, imageUrl, extract
-                );
-                // Az esemény mentése, ha szükséges
-                saveEventToDatabase(eventEntity);
+            // Remove (törlés) gomb kezelése
+            MaterialButton removeButton = view.findViewById(R.id.removeMaterialButton);
+            removeButton.setOnClickListener(v -> {
+                // Az esemény törlése az adatbázisból a cím alapján
+                removeEventFromDatabase(title); // Törlés cím alapján
             });
 
             // Vissza gomb kezelése
@@ -93,12 +88,23 @@ public class SavedDetailFragment extends Fragment {
         }
     }
 
-    // Esemény mentése a Room adatbázisba
-    private void saveEventToDatabase(EventEntity eventEntity) {
+    // Esemény törlése az adatbázisból
+    private void removeEventFromDatabase(String title) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db.eventDao().insertEvent(eventEntity);
+                // Az esemény eltávolítása az adatbázisból
+                db.eventDao().deleteEventByTitle(title);
+
+                // Az UI frissítése, miután a törlés megtörtént
+                requireActivity().runOnUiThread(() -> {
+                    // Törlés után frissítjük a SavedFragment-et
+                    getParentFragmentManager().popBackStack();
+                    SavedFragment savedFragment = new SavedFragment();
+                    requireActivity().getSupportFragmentManager().beginTransaction();
+                    // Visszatérés az előző fragmenthez
+                    getParentFragmentManager().popBackStack();
+                });
             }
         }).start();
     }
