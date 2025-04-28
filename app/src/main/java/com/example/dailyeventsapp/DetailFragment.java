@@ -2,11 +2,14 @@ package com.example.dailyeventsapp;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
 
 public class DetailFragment extends Fragment {
 
@@ -35,22 +38,28 @@ public class DetailFragment extends Fragment {
             String link = args.getString("LINK");
             int imageResId = args.getInt("IMAGE");
 
-
-            // Ezek a TextView-ok a fragment_detail.xml-ben lesznek
+            // A Fragmenthez tartozó nézetek keresése
             ImageView eventImageView = view.findViewById(R.id.eventImageView);
             TextView titleTextView = view.findViewById(R.id.titleTextView);
             TextView dateTextView = view.findViewById(R.id.dateTextView);
             TextView locationTextView = view.findViewById(R.id.locationTextView);
             TextView descriptionTextView = view.findViewById(R.id.descriptionTextView);
-        //    TextView linkTextView = view.findViewById(R.id.linkTextView);
+            // TextView linkTextView = view.findViewById(R.id.linkTextView);
 
-
+            // Adatok beállítása
             eventImageView.setImageResource(imageResId);
             titleTextView.setText(title);
             dateTextView.setText(year);
             locationTextView.setText(location);
-           descriptionTextView.setText(description);
-        //    linkTextView.setText(link);
+            descriptionTextView.setText(description);
+            // linkTextView.setText(link);
         }
+
+        // Vissza gomb kezelése
+        MaterialButton backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            // Visszatérés a ListFragment-re
+            getParentFragmentManager().popBackStack();
+        });
     }
 }

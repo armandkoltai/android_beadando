@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+
+
         <ImageView
             android:id="@+id/eventImageView"
             android:layout_width="164dp"
@@ -91,6 +93,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+
+        <!-- Vissza gomb -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/orange"
+            android:fontFamily="@font/dancing_script"
+            android:text="Back"
+            android:textColor="@color/blue"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saveMaterialButton" />
 
         <TextView
             android:id="@+id/textView8"
