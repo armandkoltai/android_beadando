@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.api;
 
 import java.util.List;
 

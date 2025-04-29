@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.dailyeventsapp.R;
+import com.example.dailyeventsapp.db.AppDatabase;
+import com.example.dailyeventsapp.db.EventEntity;
 import com.google.android.material.button.MaterialButton;
 
 public class SavedDetailFragment extends Fragment {

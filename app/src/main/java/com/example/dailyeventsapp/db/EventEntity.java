@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.db;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

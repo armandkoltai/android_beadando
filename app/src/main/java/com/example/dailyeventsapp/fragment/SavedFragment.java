@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dailyeventsapp.R;
 import com.example.dailyeventsapp.adapters.EventAdapter;
+import com.example.dailyeventsapp.db.AppDatabase;
 import com.example.dailyeventsapp.dto.EventModel;
-import com.example.dailyeventsapp.AppDatabase;
-import com.example.dailyeventsapp.EventEntity;
+import com.example.dailyeventsapp.db.EventEntity;
 
 import java.util.ArrayList;
 import java.util.List;

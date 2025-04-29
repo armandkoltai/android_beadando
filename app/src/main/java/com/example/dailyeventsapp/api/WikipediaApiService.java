@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.api;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

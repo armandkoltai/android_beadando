@@ -10,8 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dailyeventsapp.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
+import com.example.dailyeventsapp.fragment.HomeFragment;
+import com.example.dailyeventsapp.fragment.InfoFragment;
+import com.example.dailyeventsapp.fragment.SavedFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.fragment;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -15,7 +15,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.example.dailyeventsapp.R;
 import com.example.dailyeventsapp.adapters.EventAdapter;
+import com.example.dailyeventsapp.api.WikipediaApiService;
+import com.example.dailyeventsapp.api.WikipediaResponseModel;
 import com.example.dailyeventsapp.dto.EventModel;
 import com.google.android.material.button.MaterialButton;
 

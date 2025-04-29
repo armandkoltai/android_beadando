@@ -1,12 +1,9 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.db;
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-
-import com.example.dailyeventsapp.EventDao;
-import com.example.dailyeventsapp.EventEntity;
 
 @Database(entities = {EventEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {

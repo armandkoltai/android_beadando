@@ -1,4 +1,4 @@
-package com.example.dailyeventsapp;
+package com.example.dailyeventsapp.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,8 +8,14 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dailyeventsapp.R;
+import com.example.dailyeventsapp.RecyclerViewInterface;
 import com.example.dailyeventsapp.adapters.EventAdapter;
+import com.example.dailyeventsapp.api.WikipediaApiService;
+import com.example.dailyeventsapp.api.WikipediaResponseModel;
 import com.example.dailyeventsapp.dto.EventModel;
+
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
