@@ -80,10 +80,12 @@ public class SavedFragment extends Fragment {
                 Log.d("SavedFragment", "Updating UI on main thread with " + eventList.size() + " events");
 
                 if (eventList.isEmpty()) {
+                    recyclerView.setVisibility(View.INVISIBLE);
                     placerholderTextView.setText("Nothing saved for now.\n Start exploring! \uD83D\uDE0A");
                 }
 
                 if (!eventList.isEmpty()) {
+                    placerholderTextView.setVisibility(View.GONE);
                     if (eventAdapter == null) {
                         eventAdapter = new EventAdapter(getContext(), eventList, position -> {
                             EventModel selectedEvent = eventList.get(position);
