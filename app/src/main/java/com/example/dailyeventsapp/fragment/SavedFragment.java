@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ public class SavedFragment extends Fragment {
     private RecyclerView recyclerView;
     private EventAdapter eventAdapter;
     private ArrayList<EventModel> eventList = new ArrayList<>();
+    private TextView placerholderTextView;
     private AppDatabase database;
 
     @Override
@@ -37,8 +39,10 @@ public class SavedFragment extends Fragment {
         Log.d("SavedFragment", "onViewCreated called");
         super.onViewCreated(view, savedInstanceState);
 
+
         recyclerView = view.findViewById(R.id.mRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        placerholderTextView = view.findViewById(R.id.textView5);
 
         database = AppDatabase.getInstance(getContext());
 
@@ -52,9 +56,6 @@ public class SavedFragment extends Fragment {
             Log.d("SavedFragment", "Thread started for loading events");
 
             List<EventEntity> savedEvents = database.eventDao().getAllEvents();
-
-            Log.d("SavedFragment", "Number of events fetched from DB: " + (savedEvents != null ? savedEvents.size() : "null"));
-
             eventList.clear();
 
             if (savedEvents != null) {
@@ -78,10 +79,12 @@ public class SavedFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 Log.d("SavedFragment", "Updating UI on main thread with " + eventList.size() + " events");
 
+                if (eventList.isEmpty()) {
+                    placerholderTextView.setText("Nothing saved for now.\n Start exploring! \uD83D\uDE0A");
+                }
+
                 if (!eventList.isEmpty()) {
                     if (eventAdapter == null) {
-                        Log.d("SavedFragment", "Adapter is NULL, creating new EventAdapter");
-
                         eventAdapter = new EventAdapter(getContext(), eventList, position -> {
                             EventModel selectedEvent = eventList.get(position);
 
@@ -106,15 +109,13 @@ public class SavedFragment extends Fragment {
                         });
                         recyclerView.setAdapter(eventAdapter);
                     } else {
-                        Log.d("SavedFragment", "Adapter already exists, notifying data set changed");
                         eventAdapter.notifyDataSetChanged();
                     }
-                } else {
-                    Log.d("SavedFragment", "Event list is empty, no items to display.");
                 }
             });
         }).start();
     }
+
 
     public void refreshEventList() {
         Log.d("SavedFragment", "refreshEventList() called");
